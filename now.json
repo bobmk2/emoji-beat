@@ -1,0 +1,8 @@
+{
+  "version": 2,
+  "name": "emoji-sequencer",
+  "builds": [
+    { "src": "package.json", "use": "@now/next" },
+    { "src": "api/**/*", "use": "@now/node" }
+  ]
+}
