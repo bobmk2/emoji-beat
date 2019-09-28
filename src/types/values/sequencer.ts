@@ -1,9 +1,9 @@
-import { Emoji } from '../enums/emoj';
+import { Emoji } from '../enums/emoji';
 
 export type ButtonState = boolean;
 
 export type Line = {
-  color: RgbColor;
   emoji: Emoji;
   buttonStates: ButtonState[];
+  playbackRate: number;
 };

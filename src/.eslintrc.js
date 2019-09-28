@@ -19,7 +19,8 @@ module.exports = {
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/explicit-member-accessibility': 'off',
     '@typescript-eslint/no-use-before-define': 'off',
-    '@typescript-eslint/no-object-literal-type-assertion': 'off'
+    '@typescript-eslint/no-object-literal-type-assertion': 'off',
+    '@typescript-eslint/ban-ts-ignore': 'off'
   },
   parser: '@typescript-eslint/parser',
   env: { es6: true }

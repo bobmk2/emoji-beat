@@ -1,22 +1,23 @@
-/** @jsx jsx */
-import { css, jsx } from '@emotion/core';
+import * as React from 'react';
 import { Button } from 'react-bootstrap';
 import { SIcon } from '../common/FontAwesomeIcon';
-import { BackgroundColorLight } from '../../types/colors';
+import { BackgroundColorLight, Border } from '../../types/colors';
+import { StyleSheet, css } from 'aphrodite';
 
-const styles = {
+const styles = StyleSheet.create({
   root: {
     display: 'flex',
     padding: '10px',
-    backgroundColor: BackgroundColorLight
+    backgroundColor: BackgroundColorLight,
+    borderBottom: `2px solid ${Border}`
   }
-};
+});
 
 // type PropTypes = {};
 
 const EditHeader = () => {
   return (
-    <div css={css(styles.root)}>
+    <div className={css(styles.root)}>
       <Button variant='outline-light'>
         <SIcon name='plus' padding='right' />
         Add

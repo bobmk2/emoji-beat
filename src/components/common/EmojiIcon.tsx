@@ -1,24 +1,20 @@
-import { SerializedStyles } from '@emotion/css';
-import { useMemo } from 'react';
-import { Emoji } from '../../types/enums/emoj';
+import * as React from 'react';
+import { Emoji } from '../../types/enums/emoji';
+import { emojiSetting } from '../../types/values/emoji-setting';
 
 type PropTypes = {
-  _css?: SerializedStyles;
+  className?: string;
   name: Emoji;
 };
 
 const EmojiIcon = (props: PropTypes) => {
   const { name } = props;
-  const icon = useMemo(() => {
-    switch (name) {
-      case Emoji.Sushi:
-        return '🍣';
-      default:
-        return '❓';
-    }
+  const icon = React.useMemo(() => {
+    const setting = emojiSetting(name);
+    return setting ? setting.value : '❓';
   }, [name]);
 
-  return <span css={props._css}>{icon}</span>;
+  return <span className={props.className}>{icon}</span>;
 };
 
 export default EmojiIcon;

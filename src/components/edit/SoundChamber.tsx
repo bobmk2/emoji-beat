@@ -1,0 +1,113 @@
+import * as React from 'react';
+import { usePrevious } from '../../utils/hooks-helper';
+import ReactSound from 'react-sound';
+
+type PropTypes = {
+  url: string;
+  isPlayOn: boolean;
+  soundIndex?: number;
+  playbackRate?: number;
+};
+
+type SoundBullet = {
+  status: ReactSound.PlayStatus;
+  index: number;
+  invokedAt: number;
+};
+
+const SoundChamber = (props: PropTypes) => {
+  const { url, isPlayOn, soundIndex, playbackRate } = props;
+  const [soundChamber, setSoundChamber] = React.useState<SoundBullet[]>([]);
+
+  const prevSoundIndex = usePrevious<number | undefined>(soundIndex);
+
+  const handleFinishedPlaying = React.useCallback(
+    (index: number) => {
+      const nextChamber = [...soundChamber];
+      nextChamber[index] = { ...nextChamber[index], status: 'STOPPED' };
+      setSoundChamber(nextChamber);
+    },
+    [soundChamber]
+  );
+
+  const prevIsPlayOn = usePrevious(isPlayOn);
+  React.useEffect(() => {
+    if (prevIsPlayOn && !isPlayOn) {
+      // すべて止める
+      const nextChamber: SoundBullet[] = soundChamber.map(s => {
+        return { ...s, status: 'STOPPED' };
+      });
+      setSoundChamber(nextChamber);
+    }
+  }, [prevIsPlayOn, soundChamber, isPlayOn]);
+
+  React.useEffect(() => {
+    if (prevSoundIndex !== soundIndex && typeof soundIndex !== 'undefined') {
+      // チャンバーに空きがあるか確認
+      const emptySoundBulletIndex = soundChamber.findIndex(s => s.status === 'STOPPED');
+      // 無いのなら弾を込める
+      const nextChamber: SoundBullet[] = [...soundChamber];
+      if (emptySoundBulletIndex === -1) {
+        console.log('create new bullet next size -> ', nextChamber.length + 1);
+        nextChamber.push({
+          status: 'PLAYING',
+          index: soundIndex,
+          invokedAt: new Date().getTime()
+        });
+      } else {
+        // あるのならそいつを置換する
+        console.log('use empty ', emptySoundBulletIndex);
+        nextChamber[emptySoundBulletIndex] = {
+          status: 'PLAYING',
+          index: soundIndex,
+          invokedAt: new Date().getTime()
+        };
+      }
+      setSoundChamber(nextChamber);
+    }
+  }, [soundIndex, soundChamber, prevSoundIndex]);
+
+  return (
+    <>
+      {soundChamber.map((bullet, index) => {
+        return (
+          <ReactSoundRapper
+            index={index}
+            key={`sound-bullet-${bullet.index}-${bullet.invokedAt}`}
+            url={url}
+            playStatus={bullet.status}
+            onFinishedPlaying={handleFinishedPlaying}
+            playbackRate={playbackRate}
+          />
+        );
+      })}
+    </>
+  );
+};
+
+type ReactSoundRapper = {
+  index: number;
+  url: string;
+  playStatus: ReactSound.PlayStatus;
+  playbackRate?: number;
+  onFinishedPlaying: (index: number) => void;
+};
+
+const ReactSoundRapper = (props: ReactSoundRapper) => {
+  const { index, url, playStatus, onFinishedPlaying, playbackRate } = props;
+
+  const handleFinishedPlaying = React.useCallback(() => {
+    onFinishedPlaying(index);
+  }, [onFinishedPlaying, index]);
+
+  return (
+    <ReactSound
+      url={url}
+      playStatus={playStatus}
+      onFinishedPlaying={handleFinishedPlaying}
+      playbackRate={playbackRate}
+    />
+  );
+};
+
+export default SoundChamber;

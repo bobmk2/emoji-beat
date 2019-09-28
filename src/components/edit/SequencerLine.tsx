@@ -1,30 +1,27 @@
-/** @jsx jsx */
-import { css, jsx } from '@emotion/core';
+import * as React from 'react';
 import SequencerPadToggleButton from './SequencerPadToggleButton';
-import EmojiIcon from '../common/EmojiIcon';
-import { Emoji } from '../../types/enums/emoj';
-import { useCallback } from 'react';
 import { ButtonState } from '../../types/values/sequencer';
+import { StyleSheet, css } from 'aphrodite';
+import { Emoji } from '../../types/enums/emoji';
+import { emojiSetting } from '../../types/values/emoji-setting';
 
-const styles = {
+const styles = StyleSheet.create({
   root: {
-    display: 'flex',
     height: '100px'
   }
-};
+});
 
 type PropTypes = {
   index: number;
   emoji: Emoji;
-  color: RgbColor;
   buttonStates: ButtonState[];
   onChangeButtonStates: (index: number, nextStates: ButtonState[]) => void;
 };
 
 const SequencerLine = (props: PropTypes) => {
-  const { index, buttonStates, onChangeButtonStates } = props;
+  const { index, buttonStates, onChangeButtonStates, emoji } = props;
 
-  const handleClickButton = useCallback(
+  const handleClickButton = React.useCallback(
     (buttonIndex: number, isOn: boolean) => {
       const next = Array.from(buttonStates);
       next[buttonIndex] = isOn;
@@ -34,15 +31,19 @@ const SequencerLine = (props: PropTypes) => {
     [index, buttonStates, onChangeButtonStates]
   );
 
+  const color = React.useMemo(() => {
+    const setting = emojiSetting(emoji);
+    return setting ? setting.color : '#111';
+  }, [emoji]);
+
   return (
-    <div css={css(styles.root)}>
-      <EmojiIcon name={props.emoji} />
+    <div className={css(styles.root)}>
       {buttonStates.map((state, index) => {
         return (
           <SequencerPadToggleButton
             key={`pad-button_${index}`}
             index={index}
-            color={props.color}
+            color={color}
             isOn={state}
             onClick={handleClickButton}
           />
