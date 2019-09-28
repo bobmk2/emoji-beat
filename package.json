@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "next",
-    "dev:now": "now dev --port 3000",
+    "dev:now": "now dev --listen 3000",
     "build": "next build",
     "start": "next start",
     "deploy:now": "now",
@@ -18,6 +18,9 @@
     "react",
     "Now"
   ],
+  "engines": {
+    "node": "^10.12.3"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Hackbit/reactriot2019-team-kuramae.git"
