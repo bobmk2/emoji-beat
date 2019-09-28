@@ -1,4 +1,4 @@
-import App, { Container, AppContext } from 'next/app';
+import App, { AppContext } from 'next/app';
 import withRedux from 'next-redux-wrapper';
 import { initializeStore } from '../src/store';
 import { Provider } from 'react-redux';
@@ -18,11 +18,9 @@ class MyApp extends App<AppProps> {
   render() {
     const { Component, pageProps, store } = this.props;
     return (
-      <Container>
-        <Provider store={store}>
-          <Component {...pageProps} />
-        </Provider>
-      </Container>
+      <Provider store={store}>
+        <Component {...pageProps} />
+      </Provider>
     );
   }
 }

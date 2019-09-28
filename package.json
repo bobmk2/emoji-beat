@@ -1,5 +1,5 @@
 {
-  "name": "reactriot2019-team-kuramae",
+  "name": "emoji-sequencer",
   "version": "1.0.0",
   "description": "now",
   "main": "index.js",
@@ -42,11 +42,28 @@
     "@types/react-redux": "^7.1.4",
     "@types/redux": "^3.6.0",
     "@types/redux-actions": "^2.6.1",
+    "@typescript-eslint/eslint-plugin": "^2.3.1",
+    "@typescript-eslint/parser": "^2.3.1",
+    "eslint": "^6.4.0",
+    "eslint-config-prettier": "^6.3.0",
+    "eslint-config-standard": "^14.1.0",
+    "eslint-loader": "^3.0.2",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-node": "^10.0.0",
+    "eslint-plugin-prettier": "^3.1.1",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-react": "^7.14.3",
+    "eslint-plugin-react-hooks": "^2.1.0",
+    "eslint-plugin-standard": "^4.0.1",
     "now": "^16.2.0",
     "prettier": "^1.18.2",
     "typescript": "^3.6.3"
   },
   "dependencies": {
+    "@emotion/core": "^10.0.17",
+    "@zeit/next-css": "^1.0.1",
+    "babel-plugin-emotion": "^10.0.19",
+    "bootstrap": "^4.3.1",
     "express": "^4.17.1",
     "express-rate-limit": "^5.0.0",
     "helmet": "^3.21.1",
@@ -54,10 +71,12 @@
     "next": "^9.0.6",
     "next-redux-wrapper": "^4.0.0",
     "react": "^16.10.0",
+    "react-bootstrap": "^1.0.0-beta.12",
     "react-dom": "^16.10.0",
     "react-redux": "^7.1.1",
     "redux-actions": "^2.6.5",
     "redux-devtools-extension": "^2.13.8",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "stop-runaway-react-effects": "^1.2.0"
   }
 }

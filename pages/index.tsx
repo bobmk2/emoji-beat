@@ -1,4 +1,10 @@
 // import { NextJSContext } from 'next-redux-wrapper';
+import { hijackEffects } from 'stop-runaway-react-effects';
+
+if (process.env.NODE_ENV !== 'production') {
+  hijackEffects();
+}
+
 import moment from 'moment';
 
 type PropTypes = {
