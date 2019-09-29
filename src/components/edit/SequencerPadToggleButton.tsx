@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
   },
   veilOff: {
     backgroundColor: '#000',
-    opacity: 0.7,
+    opacity: 0.6,
     [':hover']: {
       opacity: 0.5
     },
