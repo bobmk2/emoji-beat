@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "pm2-runtime start ecosystem.config.js --env production",
-    "heroku-prebuild": "npm run build:prod",
+    "heroku-postbuild": "npm run build:prod",
     "dev-server": "webpack-dev-server --config webpack.dev.conf.js",
     "build:prod": "cross-env NODE_ENV=production webpack --config webpack.prod.conf.js",
     "build:dev": "cross-env NODE_ENV=development webpack --config webpack.dev.conf.js"
