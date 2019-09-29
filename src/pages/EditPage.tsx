@@ -34,7 +34,7 @@ const EditPage = () => {
   const [tempo, setTempo] = React.useState(60);
   const [isRepeatOn, setIsRepeatOn] = React.useState(false);
   const [isPlayOn, setIsPlayOn] = React.useState(false);
-  const [showSelectEmojiModal, setShowSelectEmojiModal] = React.useState(true);
+  const [showSelectEmojiModal, setShowSelectEmojiModal] = React.useState(false);
 
   const handleClickRepeat = React.useCallback((isOn: boolean) => {
     setIsRepeatOn(isOn);

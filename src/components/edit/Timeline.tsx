@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
   },
   separate: {
     position: 'absolute',
-    width: '10px',
+    width: '6px',
     height: '20px',
     backgroundColor: '#AAA',
     transform: 'translateX(-50%)'
@@ -62,8 +62,8 @@ const Timeline = React.forwardRef((props: PropTypes, ref: React.Ref<HTMLDivEleme
       <div className={css(styles.first, styles.separate)} />
       <div className={css(styles.second, styles.separate)} />
       <div className={css(styles.third, styles.separate)} />
-      {MINI_SEPARATE_LEFTS.map(s => {
-        return <div className={css(styles.miniSeparate)} style={{ left: `${s}%` }} />;
+      {MINI_SEPARATE_LEFTS.map((s, index) => {
+        return <div key={`mini-separate-${index}`} className={css(styles.miniSeparate)} style={{ left: `${s}%` }} />;
       })}
     </div>
   );
