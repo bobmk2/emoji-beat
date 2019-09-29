@@ -115,7 +115,7 @@ const EditMain = (props: PropTypes) => {
         setSoundIndex(soundIndex);
         current = soundIndex;
       }
-    }, 10);
+    }, 5);
 
     return () => {
       window.clearTimeout(tid);
