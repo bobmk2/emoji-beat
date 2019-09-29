@@ -4,6 +4,8 @@
   "description": "now",
   "main": "index.js",
   "scripts": {
+    "start": "pm2-runtime start ecosystem.config.js --env production",
+    "heroku-prebuild": "npm run build:prod",
     "dev-server": "webpack-dev-server --config webpack.dev.conf.js",
     "build:prod": "cross-env NODE_ENV=production webpack --config webpack.prod.conf.js",
     "build:dev": "cross-env NODE_ENV=development webpack --config webpack.dev.conf.js"
@@ -84,6 +86,7 @@
     "moment": "^2.24.0",
     "next": "^9.0.6",
     "next-redux-wrapper": "^4.0.0",
+    "pm2": "^3.5.1",
     "qs": "^6.9.0",
     "rc-slider": "^8.7.1",
     "react": "^16.10.0",
