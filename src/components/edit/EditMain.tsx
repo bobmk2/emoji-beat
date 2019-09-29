@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { BackgroundColorMain, Border, BackgroundColorLight } from '../../types/colors';
+import { BackgroundColorMain, Border } from '../../types/colors';
 import SequencerLine from './SequencerLine';
 import { Emoji } from '../../types/enums/emoji';
 import { Line, ButtonState } from '../../types/values/sequencer';
@@ -20,7 +20,8 @@ const styles = StyleSheet.create({
   },
   timelineSpacer: {
     width: '100%',
-    height: '20px'
+    height: '20px',
+    borderRight: `4px solid ${Border}`
   },
   emojiPanels: {
     width: '200px',
@@ -49,6 +50,11 @@ const styles = StyleSheet.create({
   frontChild: {
     height: '100%',
     position: 'relative'
+  },
+  addSequenceButtonArea: {
+    borderRight: `4px solid ${Border}`,
+    backgroundColor: BackgroundColorMain,
+    paddingBottom: '10px'
   }
 });
 
@@ -180,7 +186,9 @@ const EditMain = (props: PropTypes) => {
             />
           );
         })}
-        <AddSequenceButton onClick={onClickAddSequence} />
+        <div className={css(styles.addSequenceButtonArea)}>
+          <AddSequenceButton onClick={onClickAddSequence} />
+        </div>
       </div>
       {lines.map((line, index) => {
         return (

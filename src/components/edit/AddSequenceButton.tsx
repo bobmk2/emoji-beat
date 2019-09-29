@@ -7,7 +7,6 @@ const styles = StyleSheet.create({
   addSequenceButton: {
     width: '100%',
     height: '50px',
-    marginBottom: '10px',
     borderTopLeftRadius: 0,
     borderTopRightRadius: 0,
     borderBottomLeftRadius: '10px',
