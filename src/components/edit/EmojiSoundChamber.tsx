@@ -8,13 +8,14 @@ type PropTypes = {
   emoji: Emoji;
   isPlayOn: boolean;
   soundIndex?: number;
+  volume?: number;
   playbackRate?: number;
   buttonStates: ButtonState[];
   isMute: boolean;
 };
 
 const EmojiSoundChamber = (props: PropTypes) => {
-  const { emoji, isPlayOn, soundIndex, playbackRate, buttonStates, isMute } = props;
+  const { emoji, isPlayOn, soundIndex, volume, playbackRate, buttonStates, isMute } = props;
 
   const url = React.useMemo(() => {
     const setting = emojiSetting(emoji);
@@ -23,16 +24,23 @@ const EmojiSoundChamber = (props: PropTypes) => {
 
   const _soundIndex = React.useMemo(() => {
     if (typeof soundIndex === 'undefined') {
-      console.log('none');
+      // console.log('none');
       return undefined;
     }
-    console.log('sound -> ' + buttonStates[soundIndex] ? soundIndex : undefined);
+    // console.log('sound -> ' + buttonStates[soundIndex] ? soundIndex : undefined);
 
     return buttonStates[soundIndex] ? soundIndex : undefined;
   }, [soundIndex, buttonStates]);
 
   return (
-    <SoundChamber url={url} isPlayOn={isPlayOn} soundIndex={_soundIndex} playbackRate={playbackRate} isMute={isMute} />
+    <SoundChamber
+      url={url}
+      isPlayOn={isPlayOn}
+      soundIndex={_soundIndex}
+      playbackRate={playbackRate}
+      isMute={isMute}
+      volume={volume}
+    />
   );
 };
 

@@ -79,8 +79,8 @@ const EditFooter = (props: PropTypes) => {
           disabled={isPlayOn}
           tempo={tempo}
           min={40}
-          max={160}
-          labelInterval={20}
+          max={120}
+          labelInterval={10}
           defaultValue={defaultTempo}
           onChange={onChangeTempo}
         />

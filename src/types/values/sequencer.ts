@@ -5,5 +5,7 @@ export type ButtonState = boolean;
 export type Line = {
   emoji: Emoji;
   buttonStates: ButtonState[];
-  playbackRate: number;
+  volume: number; // 0 - 100
+  playbackRate: number; // 0.5 - 4.0
+  isMute: boolean;
 };

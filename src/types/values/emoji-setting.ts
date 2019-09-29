@@ -10,16 +10,16 @@ import { Emoji } from '../enums/emoji';
 */
 
 export function emojiSetting(emoji: Emoji): EmojiSetting | undefined {
-  return EmojiSetting[emoji];
+  return EmojiSettings[emoji];
 }
 
-type EmojiSetting = {
+export type EmojiSetting = {
   value: string;
   sound: string;
   color: RgbColor;
 };
 
-const EmojiSetting: { [key: string]: EmojiSetting } = {
+export const EmojiSettings: { [key: string]: EmojiSetting } = {
   Billiards: {
     value: '🎱',
     sound: 'billiards.mp3',

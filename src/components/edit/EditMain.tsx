@@ -15,6 +15,7 @@ const styles = StyleSheet.create({
   root: {
     backgroundColor: BackgroundColorMain,
     display: 'flex',
+    height: '100%',
     overflow: 'auto'
   },
   timelineSpacer: {
@@ -57,217 +58,27 @@ type PropTypes = {
   tempo: number;
   isPlayOn: boolean;
   isRepeatOn: boolean;
+  onUpdatedLine: (line: Line[]) => void;
   onFinishedOnePlay: () => void;
+  onClickAddSequence: () => void;
 };
 
 const EditMain = (props: PropTypes) => {
-  // const { lines } = props;
-  const { tempo, isPlayOn, isRepeatOn, onFinishedOnePlay } = props;
+  const { tempo, lines, isPlayOn, isRepeatOn, onUpdatedLine, onFinishedOnePlay, onClickAddSequence } = props;
   const [onePlayMs, setOnePlayMs] = React.useState<number | undefined>(undefined);
 
+  // TODO: should be set from props
   const [section, setSection] = React.useState(4);
-
-  const [lines, setLines] = React.useState<Line[]>([
-    {
-      emoji: Emoji.Dog,
-      buttonStates: [
-        false,
-        true,
-        false,
-        false,
-        false,
-        true,
-        true,
-        false,
-        false,
-        true,
-        false,
-        false,
-        false,
-        true,
-        true,
-        false
-      ],
-      playbackRate: 1.0,
-      isMute: false
-    },
-    {
-      emoji: Emoji.Sheep,
-      buttonStates: [
-        false,
-        true,
-        false,
-        true,
-        false,
-        true,
-        false,
-        false,
-        false,
-        true,
-        false,
-        true,
-        false,
-        true,
-        false,
-        false
-      ],
-      playbackRate: 1.0,
-      isMute: false
-    },
-    {
-      emoji: Emoji.Egg,
-      buttonStates: [
-        false,
-        true,
-        false,
-        true,
-        false,
-        true,
-        false,
-        false,
-        false,
-        true,
-        false,
-        true,
-        false,
-        true,
-        false,
-        false
-      ],
-      playbackRate: 1.0,
-      isMute: false
-    },
-    {
-      emoji: Emoji.Sushi,
-      buttonStates: [
-        false,
-        true,
-        false,
-        true,
-        false,
-        true,
-        false,
-        false,
-        false,
-        true,
-        false,
-        true,
-        false,
-        true,
-        false,
-        false
-      ],
-      playbackRate: 2.0,
-      isMute: false
-    },
-    {
-      emoji: Emoji.Crap,
-      buttonStates: [
-        true,
-        true,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        true,
-        true,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false
-      ],
-      playbackRate: 2.0,
-      isMute: false
-    },
-    {
-      emoji: Emoji.Sandwich,
-      buttonStates: [
-        true,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        true,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false
-      ],
-      playbackRate: 1.0,
-      isMute: false
-    },
-    {
-      emoji: Emoji.Elephant,
-      buttonStates: [
-        true,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        true,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false
-      ],
-      playbackRate: 1.5,
-      isMute: false
-    },
-    {
-      emoji: Emoji.Firecracker,
-      buttonStates: [
-        true,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        true,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false
-      ],
-      playbackRate: 1.5,
-      isMute: false
-    }
-  ]);
 
   const prevIsPlayOn = usePrevious<boolean>(isPlayOn);
   React.useEffect(() => {
     if (!prevIsPlayOn && isPlayOn) {
-      console.log('play start!');
+      // console.log('play start!');
       const perSec = 60 / tempo;
       const onePlayMs = perSec * section * 1000;
 
-      const perRatePerOneMs = 100 / onePlayMs;
-
-      console.log('per: ' + perRatePerOneMs + ' / ' + perRatePerOneMs * onePlayMs);
-
       setOnePlayMs(onePlayMs);
     } else if (prevIsPlayOn && !isPlayOn) {
-      console.log('play stop!!');
       setOnePlayMs(undefined);
     }
   }, [prevIsPlayOn, isPlayOn, tempo, section]);
@@ -314,29 +125,12 @@ const EditMain = (props: PropTypes) => {
       const next = { ...line, buttonStates: nextStates };
       const nextLines = Array.from(lines);
       nextLines[lineIndex] = next;
-      setLines(nextLines);
+      onUpdatedLine(nextLines);
     },
-    [lines, setLines]
+    [lines, onUpdatedLine]
   );
 
   const [soundIndex, setSoundIndex] = React.useState<number | undefined>(undefined);
-
-  // React.useEffect(() => {
-  //   let first = 0;
-  //   const iid = window.setInterval(() => {
-  //     first++;
-  //     console.log('tick ' + first);
-  //     if (first < 10) {
-  //       setSoundIndex(first);
-  //     } else {
-  //       window.clearInterval(iid);
-  //     }
-  //   }, 500);
-
-  //   return () => {
-  //     window.clearInterval(iid);
-  //   };
-  // }, []);
 
   const handleClickMute = React.useCallback(
     (lineIndex: number, isMute: boolean) => {
@@ -344,14 +138,28 @@ const EditMain = (props: PropTypes) => {
       const next = { ...line, isMute };
       const nextLines = Array.from(lines);
       nextLines[lineIndex] = next;
-      setLines(nextLines);
+      onUpdatedLine(nextLines);
     },
-    [lines]
+    [lines, onUpdatedLine]
   );
 
-  const handleClickAddSequenceButton = React.useCallback(() => {
-    console.log('clicked');
-  }, []);
+  const handleClickDelete = React.useCallback(
+    (lineIndex: number) => {
+      const nextLines = Array.from(lines);
+      nextLines.splice(lineIndex, 1);
+      onUpdatedLine(nextLines);
+    },
+    [lines, onUpdatedLine]
+  );
+
+  const handleChangeSettingLine = React.useCallback(
+    (index: number, emoji: Emoji, volume: number, playbackRate: number) => {
+      const nextLines = Array.from(lines);
+      nextLines[index] = { ...lines[index], emoji, volume, playbackRate };
+      onUpdatedLine(nextLines);
+    },
+    [lines, onUpdatedLine]
+  );
 
   return (
     <div className={[css(styles.root), props.className].join(' ')}>
@@ -364,11 +172,15 @@ const EditMain = (props: PropTypes) => {
               index={index}
               emoji={line.emoji}
               isMute={line.isMute}
+              volume={line.volume}
+              playbackRate={line.playbackRate}
               onClickMute={handleClickMute}
+              onDelete={handleClickDelete}
+              onChangeSetting={handleChangeSettingLine}
             />
           );
         })}
-        <AddSequenceButton onClick={handleClickAddSequenceButton} />
+        <AddSequenceButton onClick={onClickAddSequence} />
       </div>
       {lines.map((line, index) => {
         return (

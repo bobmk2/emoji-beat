@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
     whiteSpace: 'nowrap'
   },
   mute: {
-    opacity: 0.7
+    opacity: 0.5
   }
 });
 

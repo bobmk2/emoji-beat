@@ -7,6 +7,7 @@ type PropTypes = {
   isPlayOn: boolean;
   soundIndex?: number;
   playbackRate?: number;
+  volume?: number;
   isMute: boolean;
 };
 
@@ -17,7 +18,7 @@ type SoundBullet = {
 };
 
 const SoundChamber = (props: PropTypes) => {
-  const { url, isPlayOn, soundIndex, playbackRate, isMute } = props;
+  const { url, isPlayOn, soundIndex, playbackRate, volume, isMute } = props;
   const [soundChamber, setSoundChamber] = React.useState<SoundBullet[]>([]);
 
   const prevSoundIndex = usePrevious<number | undefined>(soundIndex);
@@ -50,7 +51,7 @@ const SoundChamber = (props: PropTypes) => {
       // 無いのなら弾を込める
       const nextChamber: SoundBullet[] = [...soundChamber];
       if (emptySoundBulletIndex === -1) {
-        console.log('create new bullet next size -> ', nextChamber.length + 1);
+        // console.log('create new bullet next size -> ', nextChamber.length + 1);
         nextChamber.push({
           status: 'PLAYING',
           index: soundIndex,
@@ -58,7 +59,7 @@ const SoundChamber = (props: PropTypes) => {
         });
       } else {
         // あるのならそいつを置換する
-        console.log('use empty ', emptySoundBulletIndex);
+        // console.log('use empty ', emptySoundBulletIndex);
         nextChamber[emptySoundBulletIndex] = {
           status: 'PLAYING',
           index: soundIndex,
@@ -80,6 +81,7 @@ const SoundChamber = (props: PropTypes) => {
             playStatus={bullet.status}
             onFinishedPlaying={handleFinishedPlaying}
             playbackRate={playbackRate}
+            volume={volume}
           />
         );
       })}
@@ -92,11 +94,12 @@ type ReactSoundRapper = {
   url: string;
   playStatus: ReactSound.PlayStatus;
   playbackRate?: number;
+  volume?: number;
   onFinishedPlaying: (index: number) => void;
 };
 
 const ReactSoundRapper = (props: ReactSoundRapper) => {
-  const { index, url, playStatus, onFinishedPlaying, playbackRate } = props;
+  const { index, url, playStatus, onFinishedPlaying, playbackRate, volume } = props;
 
   const handleFinishedPlaying = React.useCallback(() => {
     onFinishedPlaying(index);
@@ -108,6 +111,7 @@ const ReactSoundRapper = (props: ReactSoundRapper) => {
       playStatus={playStatus}
       onFinishedPlaying={handleFinishedPlaying}
       playbackRate={playbackRate}
+      volume={volume}
     />
   );
 };

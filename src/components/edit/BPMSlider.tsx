@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { css, StyleSheet } from 'aphrodite';
 import Slider from 'rc-slider';
-import { SIcon } from '../common/FontAwesomeIcon';
 
 const styles = StyleSheet.create({
   slider: {
@@ -19,6 +18,11 @@ const styles = StyleSheet.create({
   bpm: {
     flex: 1,
     textAlign: 'center'
+  },
+  emoji: {
+    fontSize: '20px',
+    textShadow:
+      'rgb(255, 255, 255) 1px 0px 0px, rgb(255, 255, 255) 0.540302px 0.841471px 0px, rgb(255, 255, 255) -0.416147px 0.909297px 0px, rgb(255, 255, 255) -0.989992px 0.14112px 0px, rgb(255, 255, 255) -0.653644px -0.756802px 0px, rgb(255, 255, 255) 0.283662px -0.958924px 0px, rgb(255, 255, 255) 0.96017px -0.279415px 0px'
   }
 });
 
@@ -50,16 +54,16 @@ const BPMSlider = (props: PropTypes) => {
   const _defaultValue = React.useMemo(() => {
     return defaultValue;
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [defaultValue]);
 
   return (
     <div className={[css(styles.slider, disabled ? styles.disabled : undefined), className].join(' ')}>
       <div className={css(styles.text)}>
-        🐢
+        <span className={css(styles.emoji)}>🐢</span>
         <span className={css(styles.bpm)}>
           Tempo: <strong>{tempo} BPM</strong>
         </span>
-        🐇
+        <span className={css(styles.emoji)}>🐇</span>
       </div>
       <div>
         <Slider
