@@ -5,12 +5,8 @@
   "main": "index.js",
   "scripts": {
     "dev-server": "webpack-dev-server --config webpack.dev.conf.js",
-    "build:dev": "cross-env NODE_ENV=development webpack --config webpack.dev.conf.js",
-    "dev:now": "now dev --listen 3000",
-    "build": "next build",
-    "start": "next start",
-    "deploy:now": "now",
-    "now-build": "next build"
+    "build:prod": "cross-env NODE_ENV=production webpack --config webpack.prod.conf.js",
+    "build:dev": "cross-env NODE_ENV=development webpack --config webpack.dev.conf.js"
   },
   "keywords": [
     "typescript",

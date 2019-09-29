@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 
 import EditPage from './pages/EditPage';
 import NotFoundPage from './pages/NotFoundPage';
@@ -13,6 +13,7 @@ class App extends React.Component<PropTypes> {
     return (
       <Router>
         <Switch>
+          <Redirect exact from='/' to='/edit' />
           <Route path='/edit' component={EditPage} />
           <Route path='*' component={NotFoundPage} />
         </Switch>
