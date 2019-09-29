@@ -23,6 +23,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#AAA',
     transform: 'translateX(-50%)'
   },
+  zero: {
+    left: '0%'
+  },
   first: {
     left: '25%'
   },
@@ -62,6 +65,7 @@ const MINI_SEPARATE_LEFTS = [
 const Timeline = React.forwardRef((props: PropTypes, ref: React.Ref<HTMLDivElement>) => {
   return (
     <div ref={ref} className={[css(styles.timeline), props.className].join(' ')} style={props.style}>
+      <div className={css(styles.zero, styles.separate)} />
       <div className={css(styles.first, styles.separate)} />
       <div className={css(styles.second, styles.separate)} />
       <div className={css(styles.third, styles.separate)} />
