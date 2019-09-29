@@ -5,7 +5,7 @@ import { Emoji } from '../types/enums/emoji';
 // @ts-ignore
 import padStart from 'lodash/padStart';
 
-export const createSaveData = (lines: Line[]): string => {
+export const createSaveData = (tempo: number, lines: Line[]): string => {
   const chunks: string[] = lines.map(line => {
     const emojiname = line.emoji.toString();
     const volume = line.volume.toString(16);
@@ -15,14 +15,20 @@ export const createSaveData = (lines: Line[]): string => {
     return `${emojiname},${volume},${playbackRate},${isMute},${buttons}`;
   });
 
-  return Base64.encodeURI(chunks.join('|'));
+  return Base64.encodeURI(`${tempo}|` + chunks.join('|'));
 };
 
-export const parseSaveData = (saveData: string): Line[] | undefined => {
+export const parseSaveData = (saveData: string): { tempo: number; lines: Line[] } | undefined => {
   try {
     const decoded = Base64.decode(saveData);
 
     const chunks = decoded.split('|');
+
+    const tempoStr: string | undefined = chunks.shift();
+    if (typeof tempoStr === 'undefined') {
+      return undefined;
+    }
+    const tempo = parseInt(tempoStr, 10);
 
     const lines: Line[] = chunks.map(chunk => {
       const data = chunk.split(',');
@@ -44,7 +50,7 @@ export const parseSaveData = (saveData: string): Line[] | undefined => {
       };
     });
 
-    return lines;
+    return { tempo, lines };
   } catch (e) {
     console.error(e);
     return undefined;

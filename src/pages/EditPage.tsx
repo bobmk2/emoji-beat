@@ -135,6 +135,7 @@ const INITIAL_LINES = [
     isMute: true
   }
 ];
+const INITIAL_TEMPO = 60;
 
 const EditPage = () => {
   const [tempo, setTempo] = React.useState(60);
@@ -184,11 +185,11 @@ const EditPage = () => {
     setShowShareModal(false);
   }, []);
   const handleClickShare = React.useCallback(() => {
-    const saveData = createSaveData(lines);
+    const saveData = createSaveData(tempo, lines);
 
     setSaveData(saveData);
     setShowShareModal(true);
-  }, [lines]);
+  }, [tempo, lines]);
 
   const { location, history } = useReactRouter();
   const query = React.useMemo(() => qs.parse(location.search, { ignoreQueryPrefix: true }), [location.search]);
@@ -202,34 +203,45 @@ const EditPage = () => {
   }, [query]);
 
   const [defaultLines, setDefaultLines] = React.useState<Line[]>([]);
+  const [defaultTempo, setDefaultTempo] = React.useState(60);
 
   React.useEffect(() => {
     if (!isShared) {
       const loadedData = loadBeatScore();
       if (typeof loadedData === 'undefined') {
+        setTempo(INITIAL_TEMPO);
+        setDefaultTempo(INITIAL_TEMPO);
         setLines(INITIAL_LINES);
         setDefaultLines(INITIAL_LINES);
         return;
       }
 
-      const lines = parseSaveData(loadedData);
-      if (typeof lines === 'undefined') {
+      const saveData = parseSaveData(loadedData);
+      if (typeof saveData === 'undefined') {
+        setTempo(INITIAL_TEMPO);
+        setDefaultTempo(INITIAL_TEMPO);
         setLines(INITIAL_LINES);
         setDefaultLines(INITIAL_LINES);
         return;
       }
 
-      setLines(lines);
-      setDefaultLines(lines);
+      setTempo(saveData.tempo);
+      setDefaultTempo(saveData.tempo);
+      setLines(saveData.lines);
+      setDefaultLines(saveData.lines);
       return;
     }
-    const lines = parseSaveData(sharedData);
-    if (typeof lines === 'undefined') {
+    const saveData = parseSaveData(sharedData);
+    if (typeof saveData === 'undefined') {
       history.replace('/edit');
       return;
     }
-    setLines(lines);
-    setDefaultLines(lines);
+    console.log('tempo ---> ', saveData);
+
+    setTempo(saveData.tempo);
+    setDefaultTempo(saveData.tempo);
+    setLines(saveData.lines);
+    setDefaultLines(saveData.lines);
   }, [isShared, sharedData, history]);
 
   const [isModifiedBeat, setIsModifiedBeat] = React.useState(false);
@@ -244,7 +256,7 @@ const EditPage = () => {
   );
 
   React.useEffect(() => {
-    const same = isEqual(lines, defaultLines);
+    const same = isEqual(lines, defaultLines) && tempo === defaultTempo;
 
     setIsModifiedBeat(same);
     if (!same) {
@@ -253,7 +265,7 @@ const EditPage = () => {
       window.onbeforeunload = null;
     }
     return;
-  }, [lines, defaultLines, handleBeforeUnload]);
+  }, [tempo, defaultTempo, lines, defaultLines, handleBeforeUnload]);
 
   const handeClickOkSelectedModal = React.useCallback(
     (emoji: Emoji, volume: number, playbackRate: number) => {
@@ -290,10 +302,17 @@ const EditPage = () => {
   );
 
   const handleClickSave = React.useCallback(() => {
-    const saveData = createSaveData(lines);
+    const saveData = createSaveData(tempo, lines);
     saveBeatScore(saveData);
     setDefaultLines(lines);
-  }, [lines]);
+    setDefaultTempo(tempo);
+  }, [tempo, lines]);
+
+  const handleClickOpenMyPage = React.useCallback(() => {
+    const win = window.open('/edit', '_blank');
+    // @ts-ignore
+    win.focus();
+  }, []);
 
   return (
     <div className={css(styles.root)}>
@@ -314,6 +333,7 @@ const EditPage = () => {
       <div className={css(styles.footer)}>
         <EditFooter
           className={css(styles.footer)}
+          isShared={isShared}
           isRepeatOn={isRepeatOn}
           isPlayOn={isPlayOn}
           tempo={tempo}
@@ -322,6 +342,7 @@ const EditPage = () => {
           onChangeTempo={handleChangeTempo}
           onClickSave={handleClickSave}
           onClickShare={handleClickShare}
+          onClickOpenMyPage={handleClickOpenMyPage}
           isModifiedBeat={isModifiedBeat}
         />
       </div>
