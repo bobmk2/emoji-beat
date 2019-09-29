@@ -198,6 +198,7 @@ const EditMain = (props: PropTypes) => {
             soundIndex={soundIndex}
             emoji={line.emoji}
             buttonStates={line.buttonStates}
+            volume={line.volume}
             playbackRate={line.playbackRate}
             isMute={line.isMute}
           />

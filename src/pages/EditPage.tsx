@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
 
 const EditPage = () => {
   const [tempo, setTempo] = React.useState(60);
-  const [isRepeatOn, setIsRepeatOn] = React.useState(false);
+  const [isRepeatOn, setIsRepeatOn] = React.useState(true);
   const [isPlayOn, setIsPlayOn] = React.useState(false);
   const [showSelectEmojiModal, setShowSelectEmojiModal] = React.useState(false);
 

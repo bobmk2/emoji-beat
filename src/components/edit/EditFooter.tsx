@@ -4,6 +4,8 @@ import { SIcon, RIcon } from '../common/FontAwesomeIcon';
 import { BackgroundColorLight, Border } from '../../types/colors';
 import { StyleSheet, css } from 'aphrodite';
 import BPMSlider from './BPMSlider';
+import SaveButton from '../common/SaveButton';
+import ShareButton from '../common/ShareButton';
 
 const styles = StyleSheet.create({
   root: {
@@ -27,6 +29,9 @@ const styles = StyleSheet.create({
     position: 'relative'
   },
   right: {
+    marginRight: '10px',
+    display: 'flex',
+    justifyContent: 'flex-end',
     width: '250px'
   },
   repeatButton: {
@@ -42,6 +47,9 @@ const styles = StyleSheet.create({
     height: '80px',
     width: '80px',
     borderRadius: '50%'
+  },
+  saveButton: {
+    marginRight: '10px'
   }
 });
 
@@ -89,7 +97,7 @@ const EditFooter = (props: PropTypes) => {
         <Button
           className={css(styles.repeatButton)}
           disabled={isPlayOn}
-          variant={isRepeatOn ? 'light' : 'outline-light'}
+          variant={isRepeatOn ? 'light' : 'outline-secondary'}
           onClick={handleClickRepeat}
           size='lg'
         >
@@ -105,7 +113,15 @@ const EditFooter = (props: PropTypes) => {
         </Button>
       </div>
       {/* Empty space */}
-      <div className={css(styles.right)} />
+      <div className={css(styles.right)}>
+        <SaveButton
+          className={css(styles.saveButton)}
+          onClick={() => {
+            console.log('clicked');
+          }}
+        />
+        <ShareButton onClick={() => {}} />
+      </div>
     </div>
   );
 };
