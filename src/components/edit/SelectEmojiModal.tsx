@@ -75,6 +75,9 @@ const styles = StyleSheet.create({
   okButton: {
     marginLeft: '10px'
   },
+  disabledCell: {
+    opacity: 0.5
+  },
   panel: {
     border: '1px solid #333',
     borderRadius: '10px',
@@ -220,17 +223,27 @@ const SelectEmojiModal = (props: PropTypes) => {
       <Modal.Header>
         <div className={css(styles.header)}>
           <span className={css(styles.selectedItem)}>
-            {typeof selectedSetting !== 'undefined' ? selectedSetting.value : '---'}
+            {typeof selectedSetting !== 'undefined' ? selectedSetting.value : '❓'}
           </span>
           <div className={css(styles.sliders)}>
             <table className={css(styles.sliderTable)}>
               <tbody>
                 <tr className={css(styles.volumeRow)}>
-                  <td className={css(styles.volumeLabelCell)}>
+                  <td
+                    className={css(
+                      styles.volumeLabelCell,
+                      typeof selectedSetting === 'undefined' ? styles.disabledCell : undefined
+                    )}
+                  >
                     <RIcon name='volume' padding='right' />
                     {'Volume: '}
                   </td>
-                  <td className={css(styles.volumeCell)}>
+                  <td
+                    className={css(
+                      styles.volumeCell,
+                      typeof selectedSetting === 'undefined' ? styles.disabledCell : undefined
+                    )}
+                  >
                     <strong className={css(styles.volumeValue)}>{selectedVolume}</strong>{' '}
                   </td>
                   <td>
@@ -243,11 +256,21 @@ const SelectEmojiModal = (props: PropTypes) => {
                   </td>
                 </tr>
                 <tr>
-                  <td className={css(styles.playbackRateLabelCell)}>
+                  <td
+                    className={css(
+                      styles.playbackRateLabelCell,
+                      typeof selectedSetting === 'undefined' ? styles.disabledCell : undefined
+                    )}
+                  >
                     <RIcon name='running' padding='right' />
                     {'Playback speed: '}
                   </td>
-                  <td className={css(styles.playbackRateCell)}>
+                  <td
+                    className={css(
+                      styles.playbackRateCell,
+                      typeof selectedSetting === 'undefined' ? styles.disabledCell : undefined
+                    )}
+                  >
                     <strong className={css(styles.volumeValue)}>
                       {'x'}
                       {selectedPlaybackRate}
@@ -266,7 +289,11 @@ const SelectEmojiModal = (props: PropTypes) => {
             </table>
           </div>
           <div className={css(styles.sampleSoundButtonArea)}>
-            <Button variant='secondary' onClick={handleClickSampleSound}>
+            <Button
+              disabled={typeof selectedSetting === 'undefined'}
+              variant='secondary'
+              onClick={handleClickSampleSound}
+            >
               <RIcon name='volume' />
             </Button>
           </div>

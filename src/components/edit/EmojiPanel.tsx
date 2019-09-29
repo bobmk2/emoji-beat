@@ -2,7 +2,7 @@ import * as React from 'react';
 import { StyleSheet, css } from 'aphrodite';
 import { Emoji } from '../../types/enums/emoji';
 import EmojiIcon from '../common/EmojiIcon';
-import { Border, BackgroundColorLight } from '../../types/colors';
+import { Border, BackgroundColorMain } from '../../types/colors';
 import { Button } from 'react-bootstrap';
 import { RIcon, SIcon } from '../common/FontAwesomeIcon';
 import SelectEmojiModal from './SelectEmojiModal';
@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
   emojiPanel: {
     padding: '5px',
     width: '100%',
-    backgroundColor: BackgroundColorLight,
+    backgroundColor: BackgroundColorMain,
     height: '90px',
     display: 'flex',
     alignItems: 'center',

@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
   },
   repeatButton: {
     position: 'absolute',
-    left: '30%',
+    left: '20%',
     top: '50%',
     transform: 'translateY(-50%)'
   },

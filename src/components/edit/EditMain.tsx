@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { BackgroundColorMain, Border } from '../../types/colors';
+import { BackgroundColorMain, Border, BackgroundColorLight } from '../../types/colors';
 import SequencerLine from './SequencerLine';
 import { Emoji } from '../../types/enums/emoji';
 import { Line, ButtonState } from '../../types/values/sequencer';
@@ -25,14 +25,14 @@ const styles = StyleSheet.create({
   emojiPanels: {
     width: '200px',
     height: '100%',
-    backgroundColor: '#FF00AA',
     position: 'sticky',
+    backgroundColor: BackgroundColorMain,
     left: 0,
     zIndex: 1
   },
   sequencerLines: {
     height: '100%',
-    backgroundColor: '#00FFAA',
+    backgroundColor: BackgroundColorMain,
     flex: 1,
     position: 'relative'
   },
