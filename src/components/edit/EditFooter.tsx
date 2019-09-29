@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Button } from 'react-bootstrap';
 import { SIcon, RIcon } from '../common/FontAwesomeIcon';
-import { BackgroundColorLight, Border } from '../../types/colors';
+import { BackgroundColorLight } from '../../types/colors';
 import { StyleSheet, css } from 'aphrodite';
 import BPMSlider from './BPMSlider';
 import SaveButton from '../common/SaveButton';

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { BackgroundColorLight, Border } from '../../types/colors';
+import { BackgroundColorLight } from '../../types/colors';
 import { StyleSheet, css } from 'aphrodite';
 import VoteButton from '../common/VoteButton';
 

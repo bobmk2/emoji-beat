@@ -73,7 +73,7 @@ const EditMain = (props: PropTypes) => {
   const [onePlayMs, setOnePlayMs] = React.useState<number | undefined>(undefined);
 
   // TODO: should be set from props
-  const [section, setSection] = React.useState(4);
+  const [section] = React.useState(4);
 
   const prevIsPlayOn = usePrevious<boolean>(isPlayOn);
   React.useEffect(() => {

@@ -217,7 +217,6 @@ const EditPage = () => {
       }
 
       const saveData = parseSaveData(loadedData);
-      console.log(saveData);
       if (typeof saveData === 'undefined') {
         setTempo(INITIAL_TEMPO);
         setDefaultTempo(INITIAL_TEMPO);
