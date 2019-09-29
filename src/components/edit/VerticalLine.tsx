@@ -25,28 +25,33 @@ const styles = StyleSheet.create({
 });
 
 type PropTypes = {
+  style?: React.CSSProperties;
   onePlayMs?: number;
   isRepeatOn: boolean;
 };
 
 const VerticalLine = (props: PropTypes) => {
-  const { onePlayMs, isRepeatOn } = props;
+  const { style, onePlayMs, isRepeatOn } = props;
 
-  const style = React.useMemo(() => {
+  const _style = React.useMemo(() => {
     if (typeof onePlayMs === 'undefined') {
-      return undefined;
+      return { ...style };
     }
 
     return {
+      ...style,
       animationTimingFunction: 'linear',
       animationDuration: `${onePlayMs}ms`,
       animationIterationCount: isRepeatOn ? 'infinite' : 1
     };
-  }, [onePlayMs, isRepeatOn]);
+  }, [onePlayMs, isRepeatOn, style]);
 
   // @ts-ignore
   return (
-    <div className={css(styles.verticalLine, typeof onePlayMs !== 'undefined' ? styles.on : undefined)} style={style} />
+    <div
+      style={_style}
+      className={css(styles.verticalLine, typeof onePlayMs !== 'undefined' ? styles.on : undefined)}
+    />
   );
 };
 

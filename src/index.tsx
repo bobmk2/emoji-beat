@@ -1,8 +1,9 @@
 import { hijackEffects } from 'stop-runaway-react-effects';
 
 if (process.env.NODE_ENV !== 'production') {
-  hijackEffects();
+  hijackEffects({ callCount: 120, timeLimit: 1000 });
 }
+import 'rc-slider/assets/index.css';
 
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';

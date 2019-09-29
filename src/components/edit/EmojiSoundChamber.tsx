@@ -10,10 +10,11 @@ type PropTypes = {
   soundIndex?: number;
   playbackRate?: number;
   buttonStates: ButtonState[];
+  isMute: boolean;
 };
 
 const EmojiSoundChamber = (props: PropTypes) => {
-  const { emoji, isPlayOn, soundIndex, playbackRate, buttonStates } = props;
+  const { emoji, isPlayOn, soundIndex, playbackRate, buttonStates, isMute } = props;
 
   const url = React.useMemo(() => {
     const setting = emojiSetting(emoji);
@@ -30,7 +31,9 @@ const EmojiSoundChamber = (props: PropTypes) => {
     return buttonStates[soundIndex] ? soundIndex : undefined;
   }, [soundIndex, buttonStates]);
 
-  return <SoundChamber url={url} isPlayOn={isPlayOn} soundIndex={_soundIndex} playbackRate={playbackRate} />;
+  return (
+    <SoundChamber url={url} isPlayOn={isPlayOn} soundIndex={_soundIndex} playbackRate={playbackRate} isMute={isMute} />
+  );
 };
 
 export default EmojiSoundChamber;

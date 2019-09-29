@@ -3,8 +3,8 @@ import { StyleSheet, css } from 'aphrodite';
 
 const styles = StyleSheet.create({
   root: {
-    height: '100px',
-    width: '100px',
+    height: '90px',
+    width: '90px',
     borderRadius: '5px',
     display: 'inline-block',
     position: 'relative'

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { BackgroundColorMain } from '../../types/colors';
+import { BackgroundColorMain, Border } from '../../types/colors';
 import SequencerLine from './SequencerLine';
 import { Emoji } from '../../types/enums/emoji';
 import { Line, ButtonState } from '../../types/values/sequencer';
@@ -8,14 +8,14 @@ import Timeline from './Timeline';
 import EmojiPanel from './EmojiPanel';
 import { usePrevious } from '../../utils/hooks-helper';
 import VerticalLine from './VerticalLine';
-import ReactSound from 'react-sound';
-import SoundChamber from './SoundChamber';
 import EmojiSoundChamber from './EmojiSoundChamber';
+import AddSequenceButton from './AddSequenceButton';
 
 const styles = StyleSheet.create({
   root: {
     backgroundColor: BackgroundColorMain,
-    display: 'flex'
+    display: 'flex',
+    overflow: 'auto'
   },
   timelineSpacer: {
     width: '100%',
@@ -24,7 +24,10 @@ const styles = StyleSheet.create({
   emojiPanels: {
     width: '200px',
     height: '100%',
-    backgroundColor: '#FF00AA'
+    backgroundColor: '#FF00AA',
+    position: 'sticky',
+    left: 0,
+    zIndex: 1
   },
   sequencerLines: {
     height: '100%',
@@ -62,18 +65,192 @@ const EditMain = (props: PropTypes) => {
   const { tempo, isPlayOn, isRepeatOn, onFinishedOnePlay } = props;
   const [onePlayMs, setOnePlayMs] = React.useState<number | undefined>(undefined);
 
-  const [section, setSection] = React.useState(2);
+  const [section, setSection] = React.useState(4);
 
   const [lines, setLines] = React.useState<Line[]>([
     {
       emoji: Emoji.Dog,
-      buttonStates: [false, true, false, false, false, true, true, false],
-      playbackRate: 1.0
+      buttonStates: [
+        false,
+        true,
+        false,
+        false,
+        false,
+        true,
+        true,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        true,
+        true,
+        false
+      ],
+      playbackRate: 1.0,
+      isMute: false
     },
     {
       emoji: Emoji.Sheep,
-      buttonStates: [false, true, false, true, false, true, false, false],
-      playbackRate: 1.0
+      buttonStates: [
+        false,
+        true,
+        false,
+        true,
+        false,
+        true,
+        false,
+        false,
+        false,
+        true,
+        false,
+        true,
+        false,
+        true,
+        false,
+        false
+      ],
+      playbackRate: 1.0,
+      isMute: false
+    },
+    {
+      emoji: Emoji.Egg,
+      buttonStates: [
+        false,
+        true,
+        false,
+        true,
+        false,
+        true,
+        false,
+        false,
+        false,
+        true,
+        false,
+        true,
+        false,
+        true,
+        false,
+        false
+      ],
+      playbackRate: 1.0,
+      isMute: false
+    },
+    {
+      emoji: Emoji.Sushi,
+      buttonStates: [
+        false,
+        true,
+        false,
+        true,
+        false,
+        true,
+        false,
+        false,
+        false,
+        true,
+        false,
+        true,
+        false,
+        true,
+        false,
+        false
+      ],
+      playbackRate: 2.0,
+      isMute: false
+    },
+    {
+      emoji: Emoji.Crap,
+      buttonStates: [
+        true,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      playbackRate: 2.0,
+      isMute: false
+    },
+    {
+      emoji: Emoji.Sandwich,
+      buttonStates: [
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      playbackRate: 1.0,
+      isMute: false
+    },
+    {
+      emoji: Emoji.Elephant,
+      buttonStates: [
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      playbackRate: 1.5,
+      isMute: false
+    },
+    {
+      emoji: Emoji.Firecracker,
+      buttonStates: [
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      playbackRate: 1.5,
+      isMute: false
     }
   ]);
 
@@ -82,9 +259,6 @@ const EditMain = (props: PropTypes) => {
     if (!prevIsPlayOn && isPlayOn) {
       console.log('play start!');
       const perSec = 60 / tempo;
-      // ----
-      const section = 2;
-      // ----
       const onePlayMs = perSec * section * 1000;
 
       const perRatePerOneMs = 100 / onePlayMs;
@@ -96,7 +270,7 @@ const EditMain = (props: PropTypes) => {
       console.log('play stop!!');
       setOnePlayMs(undefined);
     }
-  }, [prevIsPlayOn, isPlayOn, tempo]);
+  }, [prevIsPlayOn, isPlayOn, tempo, section]);
 
   React.useEffect(() => {
     if (typeof onePlayMs === 'undefined') {
@@ -136,8 +310,6 @@ const EditMain = (props: PropTypes) => {
 
   const handleChangeButtonStates = React.useCallback(
     (lineIndex: number, nextStates: ButtonState[]) => {
-      console.log(timelineRef.current ? timelineRef.current.getBoundingClientRect() : null);
-
       const line = lines[lineIndex];
       const next = { ...line, buttonStates: nextStates };
       const nextLines = Array.from(lines);
@@ -166,18 +338,38 @@ const EditMain = (props: PropTypes) => {
   //   };
   // }, []);
 
+  const handleClickMute = React.useCallback(
+    (lineIndex: number, isMute: boolean) => {
+      const line = lines[lineIndex];
+      const next = { ...line, isMute };
+      const nextLines = Array.from(lines);
+      nextLines[lineIndex] = next;
+      setLines(nextLines);
+    },
+    [lines]
+  );
+
+  const handleClickAddSequenceButton = React.useCallback(() => {
+    console.log('clicked');
+  }, []);
+
   return (
     <div className={[css(styles.root), props.className].join(' ')}>
       <div className={css(styles.emojiPanels)}>
         <div className={css(styles.timelineSpacer)} />
         {lines.map((line, index) => {
-          return <EmojiPanel key={`emoji_panel-${line.emoji}_idx-${index}`} index={index} emoji={line.emoji} />;
+          return (
+            <EmojiPanel
+              key={`emoji_panel-${line.emoji}_idx-${index}`}
+              index={index}
+              emoji={line.emoji}
+              isMute={line.isMute}
+              onClickMute={handleClickMute}
+            />
+          );
         })}
+        <AddSequenceButton onClick={handleClickAddSequenceButton} />
       </div>
-      {/*
-      // @ts-ignore */}
-      {/* <ReactSound url='/se/crap.mp3' playStatus={'PLAYING'} /> */}
-      {/* <SoundChamber url='/se/crap.mp3' soundIndex={soundIndex} /> */}
       {lines.map((line, index) => {
         return (
           <EmojiSoundChamber
@@ -187,6 +379,7 @@ const EditMain = (props: PropTypes) => {
             emoji={line.emoji}
             buttonStates={line.buttonStates}
             playbackRate={line.playbackRate}
+            isMute={line.isMute}
           />
         );
       })}
@@ -201,6 +394,7 @@ const EditMain = (props: PropTypes) => {
                 emoji={line.emoji}
                 buttonStates={line.buttonStates}
                 onChangeButtonStates={handleChangeButtonStates}
+                isMute={line.isMute}
               />
             );
           })}
@@ -210,7 +404,12 @@ const EditMain = (props: PropTypes) => {
             className={css(styles.frontChild)}
             style={{ width: timelineRef.current ? timelineRef.current.getBoundingClientRect().width : undefined }}
           >
-            <VerticalLine onePlayMs={onePlayMs} isRepeatOn={isRepeatOn} />
+            {/* TODO: modify style css, this is so terrible. */}
+            <VerticalLine
+              style={{ minHeight: `${lines.length * 90 + 20 + 60}px` }}
+              onePlayMs={onePlayMs}
+              isRepeatOn={isRepeatOn}
+            />
           </div>
         </div>
       </div>

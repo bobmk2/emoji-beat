@@ -7,7 +7,11 @@ import { emojiSetting } from '../../types/values/emoji-setting';
 
 const styles = StyleSheet.create({
   root: {
-    height: '100px'
+    height: '90px',
+    whiteSpace: 'nowrap'
+  },
+  mute: {
+    opacity: 0.7
   }
 });
 
@@ -15,17 +19,17 @@ type PropTypes = {
   index: number;
   emoji: Emoji;
   buttonStates: ButtonState[];
+  isMute: boolean;
   onChangeButtonStates: (index: number, nextStates: ButtonState[]) => void;
 };
 
 const SequencerLine = (props: PropTypes) => {
-  const { index, buttonStates, onChangeButtonStates, emoji } = props;
+  const { index, buttonStates, onChangeButtonStates, emoji, isMute } = props;
 
   const handleClickButton = React.useCallback(
     (buttonIndex: number, isOn: boolean) => {
       const next = Array.from(buttonStates);
       next[buttonIndex] = isOn;
-      console.log('nyan', buttonStates, next);
       onChangeButtonStates(index, next);
     },
     [index, buttonStates, onChangeButtonStates]
@@ -37,7 +41,7 @@ const SequencerLine = (props: PropTypes) => {
   }, [emoji]);
 
   return (
-    <div className={css(styles.root)}>
+    <div className={css(styles.root, isMute ? styles.mute : undefined)}>
       {buttonStates.map((state, index) => {
         return (
           <SequencerPadToggleButton

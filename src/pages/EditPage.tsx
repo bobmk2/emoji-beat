@@ -7,15 +7,23 @@ import EditFooter from '../components/edit/EditFooter';
 const styles = StyleSheet.create({
   root: {
     height: '100%',
+    maxHeight: '100%',
     width: '100%',
     display: 'flex',
-    flexDirection: 'column'
+    flexDirection: 'column',
+    overflow: 'hidden'
+  },
+  header: {
+    height: '70px'
   },
   main: {
-    flex: 1
+    flex: 1,
+    flexGrow: 1,
+    flexBasis: 0,
+    overflowY: 'auto'
   },
   footer: {
-    backgroundColor: '#F00'
+    height: '100px'
   }
 });
 
@@ -36,24 +44,29 @@ const EditPage = () => {
     setIsPlayOn(false);
   }, []);
 
+  const handleChangeTempo = React.useCallback((tempo: number) => {
+    setTempo(tempo);
+  }, []);
+
   return (
     <div className={css(styles.root)}>
-      <EditHeader />
-      <EditMain
-        className={css(styles.main)}
-        tempo={tempo}
-        isPlayOn={isPlayOn}
-        isRepeatOn={isRepeatOn}
-        onFinishedOnePlay={handleFinishedOnePlay}
-      />
-      <EditFooter
-        className={css(styles.footer)}
-        isRepeatOn={isRepeatOn}
-        isPlayOn={isPlayOn}
-        tempo={tempo}
-        onClickRepeat={handleClickRepeat}
-        onClickPlay={handleClickPlay}
-      />
+      <div className={css(styles.header)}>
+        <EditHeader />
+      </div>
+      <div className={css(styles.main)}>
+        <EditMain tempo={tempo} isPlayOn={isPlayOn} isRepeatOn={isRepeatOn} onFinishedOnePlay={handleFinishedOnePlay} />
+      </div>
+      <div className={css(styles.footer)}>
+        <EditFooter
+          className={css(styles.footer)}
+          isRepeatOn={isRepeatOn}
+          isPlayOn={isPlayOn}
+          tempo={tempo}
+          onClickRepeat={handleClickRepeat}
+          onClickPlay={handleClickPlay}
+          onChangeTempo={handleChangeTempo}
+        />
+      </div>
     </div>
   );
 };

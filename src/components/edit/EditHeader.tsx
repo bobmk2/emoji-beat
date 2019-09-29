@@ -6,10 +6,13 @@ import { StyleSheet, css } from 'aphrodite';
 
 const styles = StyleSheet.create({
   root: {
+    height: '100%',
     display: 'flex',
+    width: '100%',
     padding: '10px',
     backgroundColor: BackgroundColorLight,
-    borderBottom: `2px solid ${Border}`
+    borderBottom: `2px solid ${Border}`,
+    overflow: 'hidden'
   }
 });
 

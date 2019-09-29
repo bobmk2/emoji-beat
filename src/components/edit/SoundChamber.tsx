@@ -7,6 +7,7 @@ type PropTypes = {
   isPlayOn: boolean;
   soundIndex?: number;
   playbackRate?: number;
+  isMute: boolean;
 };
 
 type SoundBullet = {
@@ -16,7 +17,7 @@ type SoundBullet = {
 };
 
 const SoundChamber = (props: PropTypes) => {
-  const { url, isPlayOn, soundIndex, playbackRate } = props;
+  const { url, isPlayOn, soundIndex, playbackRate, isMute } = props;
   const [soundChamber, setSoundChamber] = React.useState<SoundBullet[]>([]);
 
   const prevSoundIndex = usePrevious<number | undefined>(soundIndex);
@@ -31,18 +32,19 @@ const SoundChamber = (props: PropTypes) => {
   );
 
   const prevIsPlayOn = usePrevious(isPlayOn);
+  const prevIsMute = usePrevious(isMute);
   React.useEffect(() => {
-    if (prevIsPlayOn && !isPlayOn) {
+    if ((prevIsPlayOn && !isPlayOn) || (prevIsMute && !isMute)) {
       // すべて止める
       const nextChamber: SoundBullet[] = soundChamber.map(s => {
         return { ...s, status: 'STOPPED' };
       });
       setSoundChamber(nextChamber);
     }
-  }, [prevIsPlayOn, soundChamber, isPlayOn]);
+  }, [prevIsPlayOn, soundChamber, isPlayOn, prevIsMute, isMute]);
 
   React.useEffect(() => {
-    if (prevSoundIndex !== soundIndex && typeof soundIndex !== 'undefined') {
+    if (prevSoundIndex !== soundIndex && typeof soundIndex !== 'undefined' && !isMute) {
       // チャンバーに空きがあるか確認
       const emptySoundBulletIndex = soundChamber.findIndex(s => s.status === 'STOPPED');
       // 無いのなら弾を込める
@@ -65,7 +67,7 @@ const SoundChamber = (props: PropTypes) => {
       }
       setSoundChamber(nextChamber);
     }
-  }, [soundIndex, soundChamber, prevSoundIndex]);
+  }, [soundIndex, soundChamber, prevSoundIndex, isMute]);
 
   return (
     <>
