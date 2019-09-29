@@ -50,6 +50,7 @@
     "@types/react-sound": "^1.2.0",
     "@types/redux": "^3.6.0",
     "@types/redux-actions": "^2.6.1",
+    "@types/store": "^2.0.2",
     "@typescript-eslint/eslint-plugin": "^2.3.1",
     "@typescript-eslint/parser": "^2.3.1",
     "css-loader": "^3.2.0",
@@ -101,6 +102,7 @@
     "redux-devtools-extension": "^2.13.8",
     "redux-thunk": "^2.3.0",
     "stop-runaway-react-effects": "^1.2.0",
+    "store": "^2.0.12",
     "use-react-router": "^1.0.7"
   }
 }

@@ -12,6 +12,7 @@ import * as qs from 'qs';
 import useReactRouter from 'use-react-router';
 // @ts-ignore
 import isEqual from 'lodash/isEqual';
+import { saveBeatScore, loadBeatScore } from '../storage/local-storage';
 
 const styles = StyleSheet.create({
   root: {
@@ -204,8 +205,22 @@ const EditPage = () => {
 
   React.useEffect(() => {
     if (!isShared) {
-      setLines(INITIAL_LINES);
-      setDefaultLines(INITIAL_LINES);
+      const loadedData = loadBeatScore();
+      if (typeof loadedData === 'undefined') {
+        setLines(INITIAL_LINES);
+        setDefaultLines(INITIAL_LINES);
+        return;
+      }
+
+      const lines = parseSaveData(loadedData);
+      if (typeof lines === 'undefined') {
+        setLines(INITIAL_LINES);
+        setDefaultLines(INITIAL_LINES);
+        return;
+      }
+
+      setLines(lines);
+      setDefaultLines(lines);
       return;
     }
     const lines = parseSaveData(sharedData);
@@ -274,6 +289,12 @@ const EditPage = () => {
     [lines]
   );
 
+  const handleClickSave = React.useCallback(() => {
+    const saveData = createSaveData(lines);
+    saveBeatScore(saveData);
+    setDefaultLines(lines);
+  }, [lines]);
+
   return (
     <div className={css(styles.root)}>
       <div className={css(styles.header)}>
@@ -299,6 +320,7 @@ const EditPage = () => {
           onClickRepeat={handleClickRepeat}
           onClickPlay={handleClickPlay}
           onChangeTempo={handleChangeTempo}
+          onClickSave={handleClickSave}
           onClickShare={handleClickShare}
           isModifiedBeat={isModifiedBeat}
         />
