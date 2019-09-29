@@ -6,6 +6,8 @@ import EditFooter from '../components/edit/EditFooter';
 import { Emoji } from '../types/enums/emoji';
 import { Line } from '../types/values/sequencer';
 import SelectEmojiModal from '../components/edit/SelectEmojiModal';
+import { createSaveData, parseSaveData } from '../utils/savedata-converter';
+import ShareModal from '../components/edit/ShareModal';
 
 const styles = StyleSheet.create({
   root: {
@@ -265,6 +267,18 @@ const EditPage = () => {
     setLines(nextLines);
   }, []);
 
+  const [saveData, setSaveData] = React.useState<undefined | string>(undefined);
+  const [showShareModal, setShowShareModal] = React.useState(false);
+  const handleHideShareModal = React.useCallback(() => {
+    setShowShareModal(false);
+  }, []);
+  const handleClickShare = React.useCallback(() => {
+    const saveData = createSaveData(lines);
+
+    setSaveData(saveData);
+    setShowShareModal(true);
+  }, [lines]);
+
   const handeClickOkSelectedModal = React.useCallback(
     (emoji: Emoji, volume: number, playbackRate: number) => {
       const newSetting: Line = {
@@ -324,6 +338,7 @@ const EditPage = () => {
           onClickRepeat={handleClickRepeat}
           onClickPlay={handleClickPlay}
           onChangeTempo={handleChangeTempo}
+          onClickShare={handleClickShare}
         />
       </div>
       {!hideModal ? (
@@ -336,6 +351,7 @@ const EditPage = () => {
       ) : (
         undefined
       )}
+      <ShareModal show={showShareModal} saveData={saveData} onHide={handleHideShareModal} />
     </div>
   );
 };

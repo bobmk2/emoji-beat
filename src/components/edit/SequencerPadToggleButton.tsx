@@ -1,19 +1,17 @@
-import React from 'react';
+import * as React from 'react';
 import { StyleSheet, css } from 'aphrodite';
 
 const styles = StyleSheet.create({
   root: {
     height: '90px',
     width: '90px',
-    borderRadius: '5px',
     display: 'inline-block',
     position: 'relative'
   },
   veil: {
     position: 'absolute',
     height: '100%',
-    width: '100%',
-    borderRadius: '5px'
+    width: '100%'
   },
   veilOn: {
     backgroundColor: '#FFF',
@@ -39,8 +37,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     height: '100%',
     width: '100%',
-    border: '1px solid #000',
-    borderRadius: '5px'
+    border: '1px solid #000'
   }
 });
 

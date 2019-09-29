@@ -62,10 +62,11 @@ type PropTypes = {
   onClickRepeat: (isOn: boolean) => void;
   onClickPlay: (isOn: boolean) => void;
   onChangeTempo: (nextTempo: number) => void;
+  onClickShare: () => void;
 };
 
 const EditFooter = (props: PropTypes) => {
-  const { tempo, isRepeatOn, isPlayOn, onClickRepeat, onClickPlay, onChangeTempo } = props;
+  const { tempo, isRepeatOn, isPlayOn, onClickRepeat, onClickPlay, onChangeTempo, onClickShare } = props;
 
   const handleClickRepeat = React.useCallback(() => {
     onClickRepeat(!isRepeatOn);
@@ -120,7 +121,7 @@ const EditFooter = (props: PropTypes) => {
             console.log('clicked');
           }}
         />
-        <ShareButton onClick={() => {}} />
+        <ShareButton onClick={onClickShare} />
       </div>
     </div>
   );
