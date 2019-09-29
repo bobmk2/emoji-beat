@@ -45,7 +45,8 @@ const ShareModal = (props: PropTypes) => {
     }
     query['data'] = saveData;
 
-    const url = `${window.location.href}?${qs.stringify(query, { encode: true })}`;
+    const queryString = qs.stringify(query, { encode: true });
+    const url = `${window.location.origin}${window.location.pathname}?${queryString}`;
 
     return url;
   }, [saveData, title, composer]);

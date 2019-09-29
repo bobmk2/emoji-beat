@@ -4,7 +4,8 @@ import { BackgroundColorLight } from '../../types/colors';
 
 const styles = StyleSheet.create({
   vote: {
-    height: '100%'
+    height: '100%',
+    whiteSpace: 'nowrap'
   },
   hbVoteWidget: {
     color: '#FFF',
@@ -55,7 +56,11 @@ const VoteButton = () => {
         <a className={css(styles.hbLink)} href='https://www.reactriot.com/entries/40-team-kuramae' target='_blank'>
           <img height='30' src='https://rumblex-reactriot1.s3.amazonaws.com/images/widget-logo.png' alt='Widget logo' />
         </a>
-        <a className={css(styles.hbVoteButton)} href='https://www.reactriot.com/entries/40-team-kuramae/vote'>
+        <a
+          className={css(styles.hbVoteButton)}
+          href='https://www.reactriot.com/entries/40-team-kuramae/vote'
+          target='_blank'
+        >
           Vote for us
         </a>
         <script src='https://www.reactriot.com/entries/40-team-kuramae/vote.js' type='text/javascript'></script>

@@ -14,7 +14,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: '10px',
     backgroundColor: BackgroundColorLight,
-    borderTop: `2px solid ${Border}`,
     overflowY: 'hidden'
   },
   slider: {
@@ -59,6 +58,7 @@ type PropTypes = {
   isRepeatOn: boolean;
   isPlayOn: boolean;
   tempo: number; // BPM
+  isModifiedBeat: boolean;
   onClickRepeat: (isOn: boolean) => void;
   onClickPlay: (isOn: boolean) => void;
   onChangeTempo: (nextTempo: number) => void;
@@ -66,7 +66,16 @@ type PropTypes = {
 };
 
 const EditFooter = (props: PropTypes) => {
-  const { tempo, isRepeatOn, isPlayOn, onClickRepeat, onClickPlay, onChangeTempo, onClickShare } = props;
+  const {
+    tempo,
+    isModifiedBeat,
+    isRepeatOn,
+    isPlayOn,
+    onClickRepeat,
+    onClickPlay,
+    onChangeTempo,
+    onClickShare
+  } = props;
 
   const handleClickRepeat = React.useCallback(() => {
     onClickRepeat(!isRepeatOn);
@@ -116,6 +125,7 @@ const EditFooter = (props: PropTypes) => {
       {/* Empty space */}
       <div className={css(styles.right)}>
         <SaveButton
+          disabled={isModifiedBeat}
           className={css(styles.saveButton)}
           onClick={() => {
             console.log('clicked');

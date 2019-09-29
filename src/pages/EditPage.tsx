@@ -8,6 +8,10 @@ import { Line } from '../types/values/sequencer';
 import SelectEmojiModal from '../components/edit/SelectEmojiModal';
 import { createSaveData, parseSaveData } from '../utils/savedata-converter';
 import ShareModal from '../components/edit/ShareModal';
+import * as qs from 'qs';
+import useReactRouter from 'use-react-router';
+// @ts-ignore
+import isEqual from 'lodash/isEqual';
 
 const styles = StyleSheet.create({
   root: {
@@ -31,6 +35,105 @@ const styles = StyleSheet.create({
     height: '100px'
   }
 });
+
+const INITIAL_LINES = [
+  {
+    emoji: Emoji.Crap,
+    buttonStates: [
+      true,
+      true,
+      false,
+      false,
+      true,
+      true,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      true,
+      true,
+      false,
+      false
+    ],
+    volume: 100,
+    playbackRate: 1.0,
+    isMute: false
+  },
+  {
+    emoji: Emoji.Cat,
+    buttonStates: [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      true,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    volume: 100,
+    playbackRate: 1.5,
+    isMute: false
+  },
+  {
+    emoji: Emoji.Sandwich,
+    buttonStates: [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      true,
+      false,
+      false,
+      false
+    ],
+    volume: 80,
+    playbackRate: 1,
+    isMute: false
+  },
+  {
+    emoji: Emoji.Dog,
+    buttonStates: [
+      true,
+      true,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      true,
+      false,
+      false,
+      false
+    ],
+    volume: 50,
+    playbackRate: 2,
+    isMute: true
+  }
+];
 
 const EditPage = () => {
   const [tempo, setTempo] = React.useState(60);
@@ -68,200 +171,7 @@ const EditPage = () => {
     setShowSelectEmojiModal(false);
   }, []);
 
-  const [lines, setLines] = React.useState<Line[]>([
-    {
-      emoji: Emoji.Dog,
-      buttonStates: [
-        false,
-        true,
-        false,
-        false,
-        false,
-        true,
-        true,
-        false,
-        false,
-        true,
-        false,
-        false,
-        false,
-        true,
-        true,
-        false
-      ],
-      volume: 100,
-      playbackRate: 1.0,
-      isMute: false
-    },
-    {
-      emoji: Emoji.Sheep,
-      buttonStates: [
-        false,
-        true,
-        false,
-        true,
-        false,
-        true,
-        false,
-        false,
-        false,
-        true,
-        false,
-        true,
-        false,
-        true,
-        false,
-        false
-      ],
-      volume: 100,
-      playbackRate: 1.0,
-      isMute: false
-    },
-    {
-      emoji: Emoji.Egg,
-      buttonStates: [
-        false,
-        true,
-        false,
-        true,
-        false,
-        true,
-        false,
-        false,
-        false,
-        true,
-        false,
-        true,
-        false,
-        true,
-        false,
-        false
-      ],
-      volume: 100,
-      playbackRate: 1.0,
-      isMute: false
-    },
-    {
-      emoji: Emoji.Sushi,
-      buttonStates: [
-        false,
-        true,
-        false,
-        true,
-        false,
-        true,
-        false,
-        false,
-        false,
-        true,
-        false,
-        true,
-        false,
-        true,
-        false,
-        false
-      ],
-      volume: 100,
-      playbackRate: 2.0,
-      isMute: false
-    },
-    {
-      emoji: Emoji.Crap,
-      buttonStates: [
-        true,
-        true,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        true,
-        true,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false
-      ],
-      volume: 100,
-      playbackRate: 2.0,
-      isMute: false
-    },
-    {
-      emoji: Emoji.Sandwich,
-      buttonStates: [
-        true,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        true,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false
-      ],
-      volume: 100,
-      playbackRate: 1.0,
-      isMute: false
-    },
-    {
-      emoji: Emoji.Elephant,
-      buttonStates: [
-        true,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        true,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false
-      ],
-      volume: 100,
-      playbackRate: 1.5,
-      isMute: false
-    },
-    {
-      emoji: Emoji.Firecracker,
-      buttonStates: [
-        true,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        true,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false
-      ],
-      volume: 100,
-      playbackRate: 1.5,
-      isMute: false
-    }
-  ]);
+  const [lines, setLines] = React.useState<Line[]>([]);
 
   const handleUpdatedLine = React.useCallback((nextLines: Line[]) => {
     setLines(nextLines);
@@ -278,6 +188,57 @@ const EditPage = () => {
     setSaveData(saveData);
     setShowShareModal(true);
   }, [lines]);
+
+  const { location, history } = useReactRouter();
+  const query = React.useMemo(() => qs.parse(location.search, { ignoreQueryPrefix: true }), [location.search]);
+
+  const [title, composer, isShared, sharedData] = React.useMemo(() => {
+    const title = typeof query.title === 'undefined' ? 'Untitled Beat' : query.title;
+    const composer = typeof query.composer === 'undefined' ? 'Anonymous' : query.composer;
+    const isShared = typeof query.data !== 'undefined';
+    const sharedData = isShared ? query.data : undefined;
+    return [title, composer, isShared, sharedData];
+  }, [query]);
+
+  const [defaultLines, setDefaultLines] = React.useState<Line[]>([]);
+
+  React.useEffect(() => {
+    if (!isShared) {
+      setLines(INITIAL_LINES);
+      setDefaultLines(INITIAL_LINES);
+      return;
+    }
+    const lines = parseSaveData(sharedData);
+    if (typeof lines === 'undefined') {
+      history.replace('/edit');
+      return;
+    }
+    setLines(lines);
+    setDefaultLines(lines);
+  }, [isShared, sharedData, history]);
+
+  const [isModifiedBeat, setIsModifiedBeat] = React.useState(false);
+  const handleBeforeUnload = React.useCallback(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    event => {
+      const msg = 'Modifid beat score. Are you sure you want to close the page?';
+      event.returnValue = msg;
+      return msg;
+    },
+    []
+  );
+
+  React.useEffect(() => {
+    const same = isEqual(lines, defaultLines);
+
+    setIsModifiedBeat(same);
+    if (!same) {
+      window.onbeforeunload = handleBeforeUnload;
+    } else {
+      window.onbeforeunload = null;
+    }
+    return;
+  }, [lines, defaultLines, handleBeforeUnload]);
 
   const handeClickOkSelectedModal = React.useCallback(
     (emoji: Emoji, volume: number, playbackRate: number) => {
@@ -316,7 +277,7 @@ const EditPage = () => {
   return (
     <div className={css(styles.root)}>
       <div className={css(styles.header)}>
-        <EditHeader />
+        <EditHeader isShared={isShared} title={title} composer={composer} />
       </div>
       <div className={css(styles.main)}>
         <EditMain
@@ -339,6 +300,7 @@ const EditPage = () => {
           onClickPlay={handleClickPlay}
           onChangeTempo={handleChangeTempo}
           onClickShare={handleClickShare}
+          isModifiedBeat={isModifiedBeat}
         />
       </div>
       {!hideModal ? (

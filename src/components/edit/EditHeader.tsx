@@ -1,6 +1,4 @@
 import * as React from 'react';
-import { Button } from 'react-bootstrap';
-import { SIcon } from '../common/FontAwesomeIcon';
 import { BackgroundColorLight, Border } from '../../types/colors';
 import { StyleSheet, css } from 'aphrodite';
 import VoteButton from '../common/VoteButton';
@@ -13,13 +11,38 @@ const styles = StyleSheet.create({
     width: '100%',
     padding: '10px',
     backgroundColor: BackgroundColorLight,
-    borderBottom: `2px solid ${Border}`,
     overflow: 'hidden'
+  },
+  brand: {
+    color: '#FFF',
+    fontSize: '18px',
+    whiteSpace: 'nowrap'
   },
   title: {
     color: '#FFF',
-    fontSize: '18px',
-    marginRight: 'auto'
+    flex: 1,
+    display: 'flex',
+    justifyContent: 'center',
+    marginRight: 'auto',
+    whiteSpace: 'nowrap',
+    textOverflow: 'ellipsis',
+    fontSize: '20px',
+    fontWeight: 700
+  },
+  titleValue: {
+    border: '1px solid #666666',
+    borderRadius: '10px',
+    paddingLeft: '10px',
+    paddingRight: '10px'
+  },
+  composerValue: {
+    color: '#FFF',
+    fontWeight: 700
+  },
+  composer: {
+    color: '#999999',
+    fontSize: '16px',
+    fontWeight: 500
   },
   right: {
     height: '100%',
@@ -31,20 +54,44 @@ const styles = StyleSheet.create({
   }
 });
 
-// type PropTypes = {};
+type PropTypes = {
+  isShared: boolean;
+  title?: string;
+  composer?: string;
+};
 
-const EditHeader = () => {
+const EditHeader = (props: PropTypes) => {
+  const { isShared, title, composer } = props;
   return (
     <div className={css(styles.root)}>
-      <div className={css(styles.title)}>
+      <div className={css(styles.brand)}>
         <span className={css(styles.emoji)}>🎶 </span>
         Emoji Beat
+      </div>
+      <div className={css(styles.title)}>
+        {isShared ? (
+          <span className={css(styles.titleValue)}>
+            <span className={css(styles.emoji)}>🎵 </span>
+            {title}
+            <span className={css(styles.composer)}>
+              {' - Composed by '}
+              <span className={css(styles.composerValue)}>{composer}</span>
+            </span>
+          </span>
+        ) : (
+          undefined
+        )}
       </div>
       <div className={css(styles.right)}>
         <VoteButton />
       </div>
     </div>
   );
+};
+
+EditHeader.defaultProps = {
+  title: 'Untitled Beat',
+  composer: 'Anonymous'
 };
 
 export default EditHeader;

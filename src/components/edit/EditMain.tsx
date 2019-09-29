@@ -52,7 +52,6 @@ const styles = StyleSheet.create({
     position: 'relative'
   },
   addSequenceButtonArea: {
-    borderRight: `4px solid ${Border}`,
     backgroundColor: BackgroundColorMain,
     paddingBottom: '10px'
   }

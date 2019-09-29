@@ -100,6 +100,7 @@
     "redux-actions": "^2.6.5",
     "redux-devtools-extension": "^2.13.8",
     "redux-thunk": "^2.3.0",
-    "stop-runaway-react-effects": "^1.2.0"
+    "stop-runaway-react-effects": "^1.2.0",
+    "use-react-router": "^1.0.7"
   }
 }
