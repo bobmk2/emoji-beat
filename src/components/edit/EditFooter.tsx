@@ -6,6 +6,7 @@ import { StyleSheet, css } from 'aphrodite';
 import BPMSlider from './BPMSlider';
 import SaveButton from '../common/SaveButton';
 import ShareButton from '../common/ShareButton';
+import OpenMyPageButton from '../common/OpenMyPageButton';
 
 const styles = StyleSheet.create({
   root: {
@@ -17,35 +18,45 @@ const styles = StyleSheet.create({
     overflowY: 'hidden'
   },
   slider: {
-    width: '250px',
+    width: '370px',
     marginLeft: '10px',
     marginBottom: '10px'
+  },
+  sliderChild: {
+    width: '300px'
   },
   controlPanel: {
     flex: 1,
     height: '100%',
+    minWidth: '100px',
     textAlign: 'center',
-    position: 'relative'
+    whiteSpace: 'nowrap'
   },
   right: {
     marginRight: '10px',
     display: 'flex',
     justifyContent: 'flex-end',
-    width: '250px'
+    width: '370px',
+    whiteSpace: 'nowrap'
   },
-  repeatButton: {
-    position: 'absolute',
-    left: '20%',
-    top: '50%',
-    transform: 'translateY(-50%)'
+  repeatButtonArea: {
+    width: '50px',
+    height: '100%',
+    display: 'flex',
+    alignItems: 'center',
+    whiteSpace: 'nowrap'
   },
+  right2: {
+    width: '50px'
+  },
+  repeatButton: {},
   playButton: {
-    position: 'absolute',
-    left: '50%',
-    transform: 'translateX(-50%)',
     height: '80px',
     width: '80px',
     borderRadius: '50%'
+  },
+  openMyPageButton: {
+    marginRight: '10px'
   },
   saveButton: {
     marginRight: '10px'
@@ -59,24 +70,28 @@ type PropTypes = {
   isPlayOn: boolean;
   tempo: number; // BPM
   isModifiedBeat: boolean;
+  isShared: boolean;
   onClickRepeat: (isOn: boolean) => void;
   onClickPlay: (isOn: boolean) => void;
   onChangeTempo: (nextTempo: number) => void;
   onClickSave: () => void;
   onClickShare: () => void;
+  onClickOpenMyPage: () => void;
 };
 
 const EditFooter = (props: PropTypes) => {
   const {
     tempo,
     isModifiedBeat,
+    isShared,
     isRepeatOn,
     isPlayOn,
     onClickRepeat,
     onClickPlay,
     onChangeTempo,
     onClickShare,
-    onClickSave
+    onClickSave,
+    onClickOpenMyPage
   } = props;
 
   const handleClickRepeat = React.useCallback(() => {
@@ -89,23 +104,24 @@ const EditFooter = (props: PropTypes) => {
 
   const defaultTempo = React.useMemo(() => {
     return tempo;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [tempo]);
 
   return (
     <div className={[css(styles.root), props.className].join(' ')}>
       <div className={css(styles.slider)}>
-        <BPMSlider
-          disabled={isPlayOn}
-          tempo={tempo}
-          min={40}
-          max={120}
-          labelInterval={10}
-          defaultValue={defaultTempo}
-          onChange={onChangeTempo}
-        />
+        <div className={css(styles.sliderChild)}>
+          <BPMSlider
+            disabled={isPlayOn}
+            tempo={tempo}
+            min={40}
+            max={120}
+            labelInterval={10}
+            defaultValue={defaultTempo}
+            onChange={onChangeTempo}
+          />
+        </div>
       </div>
-      <div className={css(styles.controlPanel)}>
+      <div className={css(styles.repeatButtonArea)}>
         <Button
           className={css(styles.repeatButton)}
           disabled={isPlayOn}
@@ -115,6 +131,8 @@ const EditFooter = (props: PropTypes) => {
         >
           {isRepeatOn ? <SIcon name='repeat' padding='none' /> : <RIcon name='repeat' padding='none' />}
         </Button>
+      </div>
+      <div className={css(styles.controlPanel)}>
         <Button
           className={css(styles.playButton)}
           variant={isPlayOn ? 'primary' : 'outline-primary'}
@@ -125,8 +143,13 @@ const EditFooter = (props: PropTypes) => {
         </Button>
       </div>
       {/* Empty space */}
+      <div className={css(styles.right2)} />
       <div className={css(styles.right)}>
-        <SaveButton disabled={isModifiedBeat} className={css(styles.saveButton)} onClick={onClickSave} />
+        {isShared ? (
+          <OpenMyPageButton className={css(styles.openMyPageButton)} onClick={onClickOpenMyPage} />
+        ) : (
+          <SaveButton disabled={isModifiedBeat} className={css(styles.saveButton)} onClick={onClickSave} />
+        )}
         <ShareButton onClick={onClickShare} />
       </div>
     </div>

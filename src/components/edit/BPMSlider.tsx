@@ -53,7 +53,6 @@ const BPMSlider = (props: PropTypes) => {
 
   const _defaultValue = React.useMemo(() => {
     return defaultValue;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [defaultValue]);
 
   return (
@@ -67,6 +66,7 @@ const BPMSlider = (props: PropTypes) => {
       </div>
       <div>
         <Slider
+          key={`tempo-${_defaultValue}`}
           disabled={disabled}
           min={min}
           max={max}

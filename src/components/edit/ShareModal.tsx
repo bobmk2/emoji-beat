@@ -3,6 +3,7 @@ import * as qs from 'qs';
 
 import { Form, Modal, Button, FormControl, FormControlProps, InputGroup, Overlay, Tooltip } from 'react-bootstrap';
 import { RIcon } from '../common/FontAwesomeIcon';
+// @ts-ignore
 import * as CopyToClipboard from 'react-copy-to-clipboard';
 
 type PropTypes = {
