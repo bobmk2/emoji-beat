@@ -60,6 +60,17 @@ const styles = StyleSheet.create({
   },
   saveButton: {
     marginRight: '10px'
+  },
+  savedMessageArea: {
+    display: 'flex',
+    alignItems: 'center',
+    marginRight: '10px'
+  },
+  savedMessage: {
+    whiteSpace: 'nowrap',
+    color: '#28a745',
+    fontSize: '20px',
+    fontWeight: 700
   }
 });
 
@@ -94,6 +105,8 @@ const EditFooter = (props: PropTypes) => {
     onClickOpenMyPage
   } = props;
 
+  const [showSavedMessage, setShowSavedMessage] = React.useState(false);
+
   const handleClickRepeat = React.useCallback(() => {
     onClickRepeat(!isRepeatOn);
   }, [onClickRepeat, isRepeatOn]);
@@ -105,6 +118,24 @@ const EditFooter = (props: PropTypes) => {
   const defaultTempo = React.useMemo(() => {
     return tempo;
   }, [tempo]);
+
+  const handleClickSave = React.useCallback(() => {
+    setShowSavedMessage(true);
+    onClickSave();
+  }, [onClickSave]);
+
+  React.useEffect(() => {
+    if (showSavedMessage) {
+      const tid = window.setTimeout(() => {
+        setShowSavedMessage(false);
+      }, 3000);
+
+      return () => {
+        window.clearTimeout(tid);
+      };
+    }
+    return;
+  }, [showSavedMessage]);
 
   return (
     <div className={[css(styles.root), props.className].join(' ')}>
@@ -145,10 +176,20 @@ const EditFooter = (props: PropTypes) => {
       {/* Empty space */}
       <div className={css(styles.right2)} />
       <div className={css(styles.right)}>
+        {showSavedMessage ? (
+          <div className={css(styles.savedMessageArea)}>
+            <span className={css(styles.savedMessage)}>
+              <RIcon name='check' padding='right' />
+              Saved
+            </span>
+          </div>
+        ) : (
+          undefined
+        )}
         {isShared ? (
           <OpenMyPageButton className={css(styles.openMyPageButton)} onClick={onClickOpenMyPage} />
         ) : (
-          <SaveButton disabled={isModifiedBeat} className={css(styles.saveButton)} onClick={onClickSave} />
+          <SaveButton disabled={isModifiedBeat} className={css(styles.saveButton)} onClick={handleClickSave} />
         )}
         <ShareButton onClick={onClickShare} />
       </div>

@@ -217,6 +217,7 @@ const EditPage = () => {
       }
 
       const saveData = parseSaveData(loadedData);
+      console.log(saveData);
       if (typeof saveData === 'undefined') {
         setTempo(INITIAL_TEMPO);
         setDefaultTempo(INITIAL_TEMPO);
@@ -236,7 +237,6 @@ const EditPage = () => {
       history.replace('/edit');
       return;
     }
-    console.log('tempo ---> ', saveData);
 
     setTempo(saveData.tempo);
     setDefaultTempo(saveData.tempo);
