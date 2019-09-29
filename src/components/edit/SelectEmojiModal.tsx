@@ -17,7 +17,9 @@ const styles = StyleSheet.create({
   panels: {
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center'
+    alignItems: 'center',
+    maxHeight: '450px',
+    overflowY: 'auto'
   },
   header: {
     display: 'flex',

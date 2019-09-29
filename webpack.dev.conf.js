@@ -9,7 +9,7 @@ module.exports = {
     inline: true,
     watchContentBase: true,
     open: true,
-    openPage: 'index.html',
+    openPage: '',
     proxy: [
       {
         context: ['/api'],
@@ -22,7 +22,7 @@ module.exports = {
       }
     ],
     historyApiFallback: {
-      index: '/index.html',
+      index: '',
       disableDotRule: true
     },
     watchOptions: {
